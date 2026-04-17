@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="FloodWatch FAQ - Frequently Asked Questions about Community Flood Monitoring">
+    <title>FloodWatch • FAQ - Community Flood Monitoring 2026</title>
+    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75' text-anchor='middle' x='50'>🌊</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="tail-container text-white min-h-screen">
+    <!-- NAVBAR -->
+    <nav class="glass fixed top-0 left-0 right-0 z-50 border-b border-white/10">
+        <div class="max-w-screen-2xl mx-auto px-8 py-5 flex items-center justify-between">
+            <div class="flex items-center gap-x-3">
+                <div class="w-9 h-9 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-2xl flex items-center justify-center text-2xl shadow-inner neon-border">🌊</div>
+                <div>
+                    <h1 class="title-font text-3xl tracking-[-1px] text-white">FloodWatch</h1>
+                    <p class="text-[10px] text-cyan-400 -mt-1 font-medium tracking-[1px]">2026 • COMMUNITY MONITORING</p>
+                </div>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-x-8 text-sm font-medium">
+                <a href="index.html" class="nav-link cursor-pointer flex items-center gap-x-1 hover:text-cyan-400">
+                    <i class="fa-solid fa-house"></i> HOME
+                </a>
+                <a href="faq.html" class="nav-link cursor-pointer flex items-center gap-x-1 hover:text-cyan-400 text-cyan-400">
+                    <i class="fa-solid fa-circle-question"></i> FAQ
+                </a>
+            </div>
+            
+            <a href="index.html" class="flex items-center gap-x-2 bg-white/10 hover:bg-white/20 px-4 h-10 rounded-3xl cursor-pointer">
+                <i class="fa-solid fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </nav>
+    
+    <!-- FAQ SECTION -->
+    <section class="pt-28 pb-20 min-h-screen">
+        <div class="max-w-4xl mx-auto px-8">
+            <!-- Header -->
+            <div class="text-center mb-16">
+                <h1 class="title-font text-6xl tracking-[-1px] mb-4">Frequently Asked Questions</h1>
+                <p class="text-xl text-white/70">Everything you need to know about FloodWatch</p>
+            </div>
+            
+            <!-- FAQ Categories -->
+            <div class="space-y-12">
+                
+                <!-- General Questions -->
+                <div>
+                    <h2 class="title-font text-4xl mb-6 text-cyan-400 flex items-center gap-3">
+                        <i class="fa-solid fa-circle-info text-3xl"></i> General
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <!-- Q1 -->
+                        <div class="glass rounded-3xl p-6 cursor-pointer faq-item" onclick="toggleFAQ(this)">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-semibold flex-1">What is FloodWatch?</h3>
+                                <i class="fa-solid fa-chevron-down text-cyan-400 transition-transform"></i>
+                            </div>
+                            <div class="faq-answer hidden mt-4 text-white/80 leading-relaxed">
+                                <p>FloodWatch is a community-based flood monitoring and early warning system that combines a mobile app for instant citizen reporting with a web dashboard for real-time visualization, alerts, and data analysis. Our goal is to help communities in flood-prone areas prepare faster and reduce disaster risks.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Q2 -->
+                        <div class="glass rounded-3xl p-6 cursor-pointer faq-item" onclick="toggleFAQ(this)">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-semibold flex-1">Who is FloodWatch for?</h3>
+                                <i class="fa-solid fa-chevron-down text-cyan-400 transition-transform"></i>
+                            </div>
+                            <div class="faq-answer hidden mt-4 text-white/80 leading-relaxed space-y-2">
+                                <p><strong>Citizens & Residents:</strong> Report floods and stay informed</p>
+                                <p><strong>Barangay Officials:</strong> Verify reports and manage local alerts</p>
+                                <p><strong>LGUs & Emergency Teams:</strong> Make faster disaster decisions</p>
+                                <p><strong>Researchers:</strong> Study flood patterns and climate data</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Q3 -->
+                        <div class="glass rounded-3xl p-6 cursor-pointer faq-item" onclick="toggleFAQ(this)">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-semibold flex-1">Is FloodWatch free to use?</h3>
+                                <i class="fa-solid fa-chevron-down text-cyan-400 transition-transform"></i>
+                            </div>
+                            <div class="faq-answer hidden mt-4 text-white/80 leading-relaxed">
+                                <p>Yes! FloodWatch is completely free for communities, barangays, LGUs, and individual citizens. No subscription required. We believe flood safety should be accessible to everyone.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- App & Features -->
+                <div>
+                    <h2 class="title-font text-4xl mb-6 text-cyan-400 flex items-center gap-3">
+                        <i class="fa-solid fa-globe text-3xl"></i> Website Features
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <!-- Q4 -->
+                        <div class="glass rounded-3xl p-6 cursor-pointer faq-item" onclick="toggleFAQ(this)">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-semibold flex-1">What can I do with the website?</h3>
+                                <i class="fa-solid fa-chevron-down text-cyan-400 transition-transform"></i>
+                            </div>
+                            <div class="faq-answer hidden mt-4 text-white/80 leading-relaxed space-y-2">
+                                <p><strong>Submit Instant Reports:</strong> Auto-detect location, upload photos, describe situation</p>
+                                <p><strong>View Flood Maps:</strong> See real-time flood zones and sensor locations on interactive map</p>
+                                <p><strong>Get Alerts:</strong> Notifications for nearby flood events and warnings</p>
+                                <p><strong>Check Live Dashboard:</strong> Monitor water levels, rainfall, and risk index</p>
+                                <p><strong>Use Offline Mode:</strong> Reports saved locally and sync when you reconnect</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Q5 -->
+                        <div class="glass rounded-3xl p-6 cursor-pointer faq-item" onclick="toggleFAQ(this)">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-semibold flex-1">How do I submit a flood report?</h3>
+                                <i class="fa-solid fa-chevron-down text-cyan-400 transition-transform"></i>
+                            </div>
+                            <div class="faq-answer hidden mt-4 text-white/80 leading-relaxed space-y-3">
+                                <p><strong>Step 1:</strong> Click "Submit Report" on the community reports section</p>
+                                <p><strong>Step 2:</strong> Enter your location (or use GPS auto-detect)</p>
+                                <p><strong>Step 3:</strong> Select severity level (Low/Medium/High)</p>
+                                <p><strong>Step 4:</strong> Describe what you see and optionally upload photos</p>
+                                <p><strong>Step 5:</strong> Click "Broadcast to the Network" — your report instantly alerts neighbors and authorities</p>
+                                <p class="text-cyan-400 pt-2"><i class="fa-solid fa-info-circle mr-2"></i> Reports are verified within 60 seconds by volunteers or admins</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Q6 -->
+                        <div class="glass rounded-3xl p-6 cursor-pointer faq-item" onclick="toggleFAQ(this)">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-semibold flex-1">How are reports verified?</h3>
+                                <i class="fa-solid fa-chevron-down text-cyan-400 transition-transform"></i>
+                            </div>
+                            <div class="faq-answer hidden mt-4 text-white/80 leading-relaxed">
+                                <p>To prevent misinformation, each report goes through a verification process:</p>
+                                <ul class="list-disc list-inside mt-3 space-y-2">
+                                    <li>Photo validation (AI checks for flood indicators)</li>
+                                    <li>Barangay verifiers confirm on-the-ground accuracy</li>
+                                    <li>Cross-check with nearby sensors and weather data</li>
+                                </ul>
+                                <p class="mt-3 text-cyan-400"><i class="fa-solid fa-shield mr-2"></i>Spam or false reports may result in account suspension</p>
+                            </div>
+                        </div>
+
+                        <!-- Q7 -->
+                        <div class="glass rounded-3xl p-6 cursor-pointer faq-item" onclick="toggleFAQ(this)">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-semibold flex-1">Does FloodWatch work offline?</h3>
+                                <i class="fa-solid fa-chevron-down text-cyan-400 transition-transform"></i>
+                            </div>
+                            <div class="faq-answer hidden mt-4 text-white/80 leading-relaxed">
+                                <p>Yes! The app works offline. You can submit reports, and they'll automatically sync when you regain internet connection. This is crucial for areas with unstable signal during disasters.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Website & Dashboard -->
+                <div>
+                    <h2 class="title-font text-4xl mb-6 text-cyan-400 flex items-center gap-3">
+                        <i class="fa-solid fa-chart-line text-3xl"></i> Dashboard Details
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <!-- Q8 -->
+                        <div class="glass rounded-3xl p-6 cursor-pointer faq-item" onclick="toggleFAQ(this)">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-semibold flex-1">What information is shown on the Live Dashboard?</h3>
+                                <i class="fa-solid fa-chevron-down text-cyan-400 transition-transform"></i>
+                            </div>
+                            <div class="faq-answer hidden mt-4 text-white/80 leading-relaxed space-y-2">
+                                <p><strong>Water Levels:</strong> Real-time water level measurements at Banago River</p>
+                                <p><strong>Flood Risk Index:</strong> AI-calculated risk level (Low/Medium/High/Critical)</p>
+                                <p><strong>Active Monitors:</strong> Number of community sensors actively reporting</p>
+                                <p><strong>24-Hour Rainfall:</strong> Total rainfall accumulation with hourly breakdown</p>
+                                <p><strong>AI Predictions:</strong> Forecast of flood peak and affected areas</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Q9 -->
+                        <div class="glass rounded-3xl p-6 cursor-pointer faq-item" onclick="toggleFAQ(this)">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-semibold flex-1">How often is the dashboard updated?</h3>
+                                <i class="fa-solid fa-chevron-down text-cyan-400 transition-transform"></i>
+                            </div>
+                            <div class="faq-answer hidden mt-4 text-white/80 leading-relaxed">
+                                <p>Every report submitted appears on the dashboard instantly. Sensor data (water levels, rainfall) updates every 1-2 minutes. The dashboard uses real-time AJAX polling to keep your view fresh without needing to refresh the page.</p>
+                            </div>
+                        </div>
+
+                        <!-- Q10 -->
+                        <div class="glass rounded-3xl p-6 cursor-pointer faq-item" onclick="toggleFAQ(this)">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-semibold flex-1">Can I access the dashboard on my phone?</h3>
+                                <i class="fa-solid fa-chevron-down text-cyan-400 transition-transform"></i>
+                            </div>
+                            <div class="faq-answer hidden mt-4 text-white/80 leading-relaxed">
+                                <p>Yes! The website is fully mobile-responsive. Emergency responders can check live data, approve reports, and send alerts from any device. You can even install it like an app on your home screen by selecting "Install app" or "Add to Home Screen" in your mobile browser.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Privacy & Safety -->
+                <div>
+                    <h2 class="title-font text-4xl mb-6 text-cyan-400 flex items-center gap-3">
+                        <i class="fa-solid fa-lock text-3xl"></i> Privacy & Safety
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <!-- Q11 -->
+                        <div class="glass rounded-3xl p-6 cursor-pointer faq-item" onclick="toggleFAQ(this)">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-semibold flex-1">Is my personal data safe?</h3>
+                                <i class="fa-solid fa-chevron-down text-cyan-400 transition-transform"></i>
+                            </div>
+                            <div class="faq-answer hidden mt-4 text-white/80 leading-relaxed space-y-2">
+                                <p><strong>✅ HTTPS Encryption:</strong> All data is encrypted during transmission with SSL/TLS</p>
+                                <p><strong>✅ Privacy Compliance:</strong> We comply with the Philippine Data Privacy Act</p>
+                                <p><strong>✅ No Selling:</strong> Your data is never sold to third parties</p>
+                                <p><strong>✅ Secure Passwords:</strong> Passwords are hashed and never stored in plain text</p>
+                                <p><strong>✅ Regular Audits:</strong> Security reviews conducted regularly</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Q12 -->
+                        <div class="glass rounded-3xl p-6 cursor-pointer faq-item" onclick="toggleFAQ(this)">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-semibold flex-1">What data does FloodWatch collect?</h3>
+                                <i class="fa-solid fa-chevron-down text-cyan-400 transition-transform"></i>
+                            </div>
+                            <div class="faq-answer hidden mt-4 text-white/80 leading-relaxed space-y-2">
+                                <p><strong>Essential:</strong> Name, email, phone number, location</p>
+                                <p><strong>For Reports:</strong> GPS coordinates, flood photos, descriptions, timestamps</p>
+                                <p><strong>For Improvement:</strong> App usage patterns (no personal browsing data)</p>
+                                <p class="text-sm text-white/60 mt-3">You can delete your account and all associated data at any time.</p>
+                            </div>
+                        </div>
+
+                        <!-- Q13 -->
+                        <div class="glass rounded-3xl p-6 cursor-pointer faq-item" onclick="toggleFAQ(this)">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-semibold flex-1">Will my location be visible to everyone?</h3>
+                                <i class="fa-solid fa-chevron-down text-cyan-400 transition-transform"></i>
+                            </div>
+                            <div class="faq-answer hidden mt-4 text-white/80 leading-relaxed">
+                                <p>No. Your personal location data is kept private. When you submit a report, only the <strong>barangay/street level</strong> location is shown publicly, not your exact address. Authorities can see precise coordinates when verifying reports.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Technical & Future -->
+                <div>
+                    <h2 class="title-font text-4xl mb-6 text-cyan-400 flex items-center gap-3">
+                        <i class="fa-solid fa-gear text-3xl"></i> Technical & Future
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <!-- Q14 -->
+                        <div class="glass rounded-3xl p-6 cursor-pointer faq-item" onclick="toggleFAQ(this)">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-semibold flex-1">What technology powers FloodWatch?</h3>
+                                <i class="fa-solid fa-chevron-down text-cyan-400 transition-transform"></i>
+                            </div>
+                            <div class="faq-answer hidden mt-4 text-white/80 leading-relaxed space-y-2">
+                                <p><strong>Backend:</strong> PHP with MySQL database for reliability and scalability</p>
+                                <p><strong>Frontend:</strong> HTML5, CSS3, JavaScript with Tailwind CSS for modern design</p>
+                                <p><strong>Mapping:</strong> Leaflet.js with CartoDB tiles for accurate visualization</p>
+                                <p><strong>Real-time Updates:</strong> AJAX polling for live data synchronization</p>
+                                <p><strong>Hosting:</strong> Can run on any PHP-compatible web server (Apache, Nginx)</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Q15 -->
+                        <div class="glass rounded-3xl p-6 cursor-pointer faq-item" onclick="toggleFAQ(this)">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-semibold flex-1">Can FloodWatch integrate with government sensors or PAGASA data?</h3>
+                                <i class="fa-solid fa-chevron-down text-cyan-400 transition-transform"></i>
+                            </div>
+                            <div class="faq-answer hidden mt-4 text-white/80 leading-relaxed">
+                                <p>Yes! We're working with PAGASA to integrate official rainfall and typhoon forecasts. We also support IoT water-level sensors (Arduino/ESP32) for real-time hydrological monitoring. This hybrid approach combines community crowdsourced reports with scientific data for better accuracy.</p>
+                            </div>
+                        </div>
+
+                        <!-- Q16 -->
+                        <div class="glass rounded-3xl p-6 cursor-pointer faq-item" onclick="toggleFAQ(this)">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-semibold flex-1">What's planned for the future?</h3>
+                                <i class="fa-solid fa-chevron-down text-cyan-400 transition-transform"></i>
+                            </div>
+                            <div class="faq-answer hidden mt-4 text-white/80 leading-relaxed space-y-2">
+                                <p class="text-cyan-400 font-semibold">Coming Soon:</p>
+                                <ul class="list-disc list-inside space-y-1">
+                                    <li>AI flood prediction models</li>
+                                    <li>IoT sensor integration (Arduino/ESP32)</li>
+                                    <li>Historical flood data analysis and trends</li>
+                                    <li>Community leaderboards for active reporters</li>
+                                    <li>Exportable reports for DRRM planning</li>
+                                    <li>Mobile app (iOS & Android) for easier reporting</li>
+                                    <li>Real-time collaboration tools for responders</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Q17 -->
+                        <div class="glass rounded-3xl p-6 cursor-pointer faq-item" onclick="toggleFAQ(this)">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-semibold flex-1">How can I contribute or suggest improvements?</h3>
+                                <i class="fa-solid fa-chevron-down text-cyan-400 transition-transform"></i>
+                            </div>
+                            <div class="faq-answer hidden mt-4 text-white/80 leading-relaxed space-y-2">
+                                <p><strong>Feedback:</strong> Use the contact form on the website</p>
+                                <p><strong>Email Support:</strong> Send your suggestions to support@floodwatch.local</p>
+                                <p><strong>Report Bugs:</strong> Include screenshots and error messages when reporting issues</p>
+                                <p><strong>Community Forum:</strong> Join discussions with barangay coordinators</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Troubleshooting -->
+                <div>
+                    <h2 class="title-font text-4xl mb-6 text-cyan-400 flex items-center gap-3">
+                        <i class="fa-solid fa-wrench text-3xl"></i> Troubleshooting
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <!-- Q18 -->
+                        <div class="glass rounded-3xl p-6 cursor-pointer faq-item" onclick="toggleFAQ(this)">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-semibold flex-1">The website won't load. What do I do?</h3>
+                                <i class="fa-solid fa-chevron-down text-cyan-400 transition-transform"></i>
+                            </div>
+                            <div class="faq-answer hidden mt-4 text-white/80 leading-relaxed space-y-2">
+                                <p><strong>Step 1:</strong> Check your internet connection</p>
+                                <p><strong>Step 2:</strong> Refresh the page (press F5 or Ctrl+R)</p>
+                                <p><strong>Step 3:</strong> Clear browser cache and cookies (Settings > Clear Browsing Data)</p>
+                                <p><strong>Step 4:</strong> Try a different browser (Chrome, Firefox, Safari)</p>
+                                <p><strong>Step 5:</strong> Check if the server is running (contact your system administrator)</p>
+                                <p class="text-cyan-400 mt-2">Still having issues? Email support@floodwatch.local</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Q19 -->
+                        <div class="glass rounded-3xl p-6 cursor-pointer faq-item" onclick="toggleFAQ(this)">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-semibold flex-1">My location isn't detected accurately</h3>
+                                <i class="fa-solid fa-chevron-down text-cyan-400 transition-transform"></i>
+                            </div>
+                            <div class="faq-answer hidden mt-4 text-white/80 leading-relaxed space-y-2">
+                                <p><strong>Solutions:</strong></p>
+                                <ul class="list-disc list-inside space-y-1">
+                                    <li>Enable location permission for your browser</li>
+                                    <li>Ensure you have GPS/location services enabled on your device</li>
+                                    <li>Wait 10-15 seconds for GPS to lock (in open areas, not indoors)</li>
+                                    <li>Manually adjust the location pin on the map if needed</li>
+                                    <li>Type your street address manually as an alternative</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Q20 -->
+                        <div class="glass rounded-3xl p-6 cursor-pointer faq-item" onclick="toggleFAQ(this)">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-semibold flex-1">Photos won't upload. What's wrong?</h3>
+                                <i class="fa-solid fa-chevron-down text-cyan-400 transition-transform"></i>
+                            </div>
+                            <div class="faq-answer hidden mt-4 text-white/80 leading-relaxed space-y-2">
+                                <p><strong>Common Causes:</strong></p>
+                                <ul class="list-disc list-inside space-y-1">
+                                    <li>Weak internet connection — wait for stronger signal</li>
+                                    <li>File too large — photos should be under 10MB</li>
+                                    <li>Wrong format — use JPG, PNG, or GIF</li>
+                                    <li>Server storage full — contact administrator</li>
+                                </ul>
+                                <p class="mt-2">You can also submit reports without photos; they're optional.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="mt-20 text-center">
+                <div class="glass rounded-3xl p-12">
+                    <h3 class="title-font text-3xl mb-4">Still have questions?</h3>
+                    <p class="text-white/70 mb-6">We're here to help! Reach out through any of these channels:</p>
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <a href="mailto:support@floodwatch.local" class="px-6 py-3 bg-cyan-400 text-black font-semibold rounded-3xl hover:bg-white transition">
+                            <i class="fa-solid fa-envelope mr-2"></i> Email Support
+                        </a>
+                        <a href="index.html" class="px-6 py-3 border border-cyan-400 text-cyan-400 font-semibold rounded-3xl hover:bg-cyan-400/10 transition">
+                            <i class="fa-solid fa-home mr-2"></i> Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-black/40 border-t border-white/10 py-12">
+        <div class="max-w-screen-2xl mx-auto px-8 text-center">
+            <p class="text-white/60">2026 • FloodWatch Community Flood Monitoring System</p>
+            <p class="text-xs text-white/40 mt-2">Made with ❤️ for safer communities</p>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ Toggle Functionality
+        function toggleFAQ(element) {
+            const answer = element.querySelector('.faq-answer');
+            const icon = element.querySelector('i:last-child');
+            
+            // Close other open FAQs
+            document.querySelectorAll('.faq-item').forEach(item => {
+                if (item !== element) {
+                    item.querySelector('.faq-answer').classList.add('hidden');
+                    item.querySelector('i:last-child').style.transform = 'rotate(0deg)';
+                }
+            });
+            
+            // Toggle current
+            answer.classList.toggle('hidden');
+            icon.style.transform = answer.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>

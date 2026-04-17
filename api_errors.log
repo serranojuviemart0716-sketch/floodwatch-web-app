@@ -1,0 +1,133 @@
+[17-Apr-2026 11:06:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:173
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 173
+[17-Apr-2026 11:06:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:241
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 241
+[17-Apr-2026 11:06:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:196
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 196
+[17-Apr-2026 11:07:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:173
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 173
+[17-Apr-2026 11:07:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:241
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 241
+[17-Apr-2026 11:07:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:196
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 196
+[17-Apr-2026 11:08:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:173
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 173
+[17-Apr-2026 11:08:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:241
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 241
+[17-Apr-2026 11:08:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:196
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 196
+[17-Apr-2026 11:09:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:173
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 173
+[17-Apr-2026 11:09:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:241
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 241
+[17-Apr-2026 11:09:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:196
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 196
+[17-Apr-2026 11:10:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:241
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 241
+[17-Apr-2026 11:10:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:173
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 173
+[17-Apr-2026 11:10:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:196
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 196
+[17-Apr-2026 11:11:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:173
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 173
+[17-Apr-2026 11:11:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:196
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 196
+[17-Apr-2026 11:11:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:241
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 241
+[17-Apr-2026 11:12:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:241
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 241
+[17-Apr-2026 11:12:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:173
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 173
+[17-Apr-2026 11:12:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:196
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 196
+[17-Apr-2026 11:13:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:173
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 173
+[17-Apr-2026 11:13:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:241
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 241
+[17-Apr-2026 11:13:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:196
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 196
+[17-Apr-2026 11:14:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:241
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 241
+[17-Apr-2026 11:14:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:173
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 173
+[17-Apr-2026 11:14:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function fetch_assoc() on bool in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php:196
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Flood Watch Community Based Monitoring System\api.php on line 196
+[17-Apr-2026 11:21:11 Europe/Berlin] Alerts query failed: Table 'floodwatch_db.alerts' doesn't exist
+[17-Apr-2026 11:22:11 Europe/Berlin] Alerts query failed: Table 'floodwatch_db.alerts' doesn't exist
+[17-Apr-2026 11:23:11 Europe/Berlin] Alerts query failed: Table 'floodwatch_db.alerts' doesn't exist
+[17-Apr-2026 11:24:11 Europe/Berlin] Alerts query failed: Table 'floodwatch_db.alerts' doesn't exist
+[17-Apr-2026 11:25:11 Europe/Berlin] Alerts query failed: Table 'floodwatch_db.alerts' doesn't exist
+[17-Apr-2026 11:26:11 Europe/Berlin] Alerts query failed: Table 'floodwatch_db.alerts' doesn't exist
+[17-Apr-2026 11:27:11 Europe/Berlin] Alerts query failed: Table 'floodwatch_db.alerts' doesn't exist
+[17-Apr-2026 11:28:11 Europe/Berlin] Alerts query failed: Table 'floodwatch_db.alerts' doesn't exist
+[17-Apr-2026 11:29:11 Europe/Berlin] Alerts query failed: Table 'floodwatch_db.alerts' doesn't exist
+[17-Apr-2026 11:30:11 Europe/Berlin] Alerts query failed: Table 'floodwatch_db.alerts' doesn't exist
+[17-Apr-2026 11:31:11 Europe/Berlin] Alerts query failed: Table 'floodwatch_db.alerts' doesn't exist
+[17-Apr-2026 11:32:11 Europe/Berlin] Alerts query failed: Table 'floodwatch_db.alerts' doesn't exist
+[17-Apr-2026 11:33:11 Europe/Berlin] Alerts query failed: Table 'floodwatch_db.alerts' doesn't exist
+[17-Apr-2026 11:34:11 Europe/Berlin] Alerts query failed: Table 'floodwatch_db.alerts' doesn't exist
+[17-Apr-2026 11:35:11 Europe/Berlin] Alerts query failed: Table 'floodwatch_db.alerts' doesn't exist
+[17-Apr-2026 11:36:11 Europe/Berlin] Alerts query failed: Table 'floodwatch_db.alerts' doesn't exist
+[17-Apr-2026 11:37:11 Europe/Berlin] Alerts query failed: Table 'floodwatch_db.alerts' doesn't exist
+[17-Apr-2026 11:38:11 Europe/Berlin] Alerts query failed: Table 'floodwatch_db.alerts' doesn't exist
+[17-Apr-2026 11:39:11 Europe/Berlin] Alerts query failed: Table 'floodwatch_db.alerts' doesn't exist
+[17-Apr-2026 11:40:11 Europe/Berlin] Alerts query failed: Table 'floodwatch_db.alerts' doesn't exist
+[17-Apr-2026 11:41:11 Europe/Berlin] Alerts query failed: Table 'floodwatch_db.alerts' doesn't exist
+[17-Apr-2026 11:42:11 Europe/Berlin] Alerts query failed: Table 'floodwatch_db.alerts' doesn't exist
+[17-Apr-2026 11:43:11 Europe/Berlin] Alerts query failed: Table 'floodwatch_db.alerts' doesn't exist
+[17-Apr-2026 11:44:11 Europe/Berlin] Alerts query failed: Table 'floodwatch_db.alerts' doesn't exist
+[17-Apr-2026 11:45:11 Europe/Berlin] Alerts query failed: Table 'floodwatch_db.alerts' doesn't exist

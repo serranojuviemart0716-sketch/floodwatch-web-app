@@ -1,0 +1,978 @@
+@<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="FloodWatch - Real-time community flood monitoring system 2026">
+    <meta name="theme-color" content="#0a0a2e">
+    <title>FloodWatch • Community Flood Monitoring 2026</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://cdn.tailwindcss.com" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/font-awesome@6.6.0/css/all.min.css" as="style">
+    <link rel="preload" href="styles.css" as="style">
+    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75' text-anchor='middle' x='50'>🌊</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Leaflet Map Library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    
+    <!-- Performance monitoring -->
+    <script>
+        window.pageStartTime = performance.now();
+        // Register Service Worker for offline support
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed:', err));
+        }
+    </script>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0a0a2e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body class="tail-container text-white min-h-screen">
+    <?php include 'handle-reports.php'; ?>
+    
+    <!-- NAVBAR -->
+    <nav class="glass fixed top-0 left-0 right-0 z-50 border-b border-white/10">
+        <div class="max-w-screen-2xl mx-auto px-8 py-5 flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center gap-x-3">
+                <div class="w-9 h-9 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-2xl flex items-center justify-center text-2xl shadow-inner neon-border">
+                    🌊 
+                </div>
+                <div>
+                    <h1 class="title-font text-3xl tracking-[-1px] text-white">FloodWatch</h1>
+                    <p class="text-[10px] text-cyan-400 -mt-1 font-medium tracking-[1px]">2026 • COMMUNITY MONITORING</p>
+                </div>
+            </div>
+            
+            <!-- Desktop Nav -->
+            <div class="hidden md:flex items-center gap-x-8 text-sm font-medium">
+                <a onclick="navigateToSection('hero')" class="nav-link cursor-pointer flex items-center gap-x-1 hover:text-cyan-400">
+                    <i class="fa-solid fa-house"></i>
+                    <span>OVERVIEW</span>
+                </a>
+                <a onclick="navigateToSection('dashboard')" class="nav-link cursor-pointer flex items-center gap-x-1 hover:text-cyan-400">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>DASHBOARD</span>
+                </a>
+                <a onclick="navigateToSection('map')" class="nav-link cursor-pointer flex items-center gap-x-1 hover:text-cyan-400">
+                    <i class="fa-solid fa-map"></i>
+                    <span>LIVE MAP</span>
+                </a>
+                <a onclick="navigateToSection('reports')" class="nav-link cursor-pointer flex items-center gap-x-1 hover:text-cyan-400">
+                    <i class="fa-solid fa-users"></i>
+                    <span>COMMUNITY REPORTS</span>
+                </a>
+                <a onclick="navigateToSection('alerts')" class="nav-link cursor-pointer flex items-center gap-x-1 hover:text-cyan-400">
+                    <i class="fa-solid fa-bell"></i>
+                    <span>ALERTS</span>
+                </a>
+                <a href="faq.html" class="nav-link cursor-pointer flex items-center gap-x-1 hover:text-cyan-400">
+                    <i class="fa-solid fa-circle-question"></i>
+                    <span>FAQ</span>
+                </a>
+            </div>
+            
+            <!-- Right side -->
+            <div class="flex items-center gap-x-4">
+                <!-- Live indicator -->
+                <div class="hidden sm:flex items-center bg-emerald-500/10 text-emerald-400 text-xs font-medium px-4 h-8 rounded-3xl border border-emerald-400/30">
+                    <div class="w-2 h-2 bg-emerald-400 rounded-full live-dot mr-2"></div>
+                    LIVE • 142 SENSORS ONLINE
+                </div>
+                
+                <!-- Auth Section -->
+                <div id="authSection" class="flex items-center gap-x-2">
+                    <!-- Logged In User View -->
+                    <div id="userLoggedIn" class="hidden flex items-center gap-x-3">
+                        <div class="flex items-center gap-x-2 bg-white/10 hover:bg-white/20 px-4 h-10 rounded-3xl cursor-pointer" onclick="toggleUserMenu()">
+                            <i class="fa-solid fa-circle-user text-cyan-400 text-xl"></i>
+                            <div class="text-sm font-medium" id="userName">User</div>
+                            <i class="fa-solid fa-chevron-down text-cyan-400 text-xs"></i>
+                        </div>
+                        
+                        <!-- User Dropdown Menu -->
+                        <div id="userMenu" class="hidden absolute top-20 right-8 glass rounded-3xl p-2 min-w-48 shadow-2xl border border-cyan-400/20 z-40">
+                            <div class="px-4 py-3 border-b border-white/10 text-xs">
+                                <div id="userEmail" class="text-white/70">user@example.com</div>
+                                <div id="userBarangay" class="text-cyan-400 font-semibold mt-1">Barangay</div>
+                            </div>
+                            <button onclick="navigateTo('user-dashboard.html')" class="w-full text-left px-4 py-3 hover:bg-white/10 rounded-2xl transition flex items-center gap-2 text-sm">
+                                <i class="fa-solid fa-chart-line"></i> My Dashboard
+                            </button>
+                            <div id="adminMenuLink" class="hidden">
+                                <button onclick="navigateTo('admin-dashboard.html')" class="w-full text-left px-4 py-3 hover:bg-white/10 rounded-2xl transition flex items-center gap-2 text-sm">
+                                    <i class="fa-solid fa-shield"></i> Admin Panel
+                                </button>
+                            </div>
+                            <button onclick="navigateToSection('reports')" class="w-full text-left px-4 py-3 hover:bg-white/10 rounded-2xl transition flex items-center gap-2 text-sm">
+                                <i class="fa-solid fa-paper-plane"></i> Submit Report
+                            </button>
+                            <button onclick="window.location.href='faq.html'" class="w-full text-left px-4 py-3 hover:bg-white/10 rounded-2xl transition flex items-center gap-2 text-sm">
+                                <i class="fa-solid fa-circle-question"></i> Help & FAQ
+                            </button>
+                            <div class="border-t border-white/10 mt-2 pt-2">
+                                <button onclick="performLogout()" class="w-full text-left px-4 py-3 hover:bg-red-500/10 text-red-400 rounded-2xl transition flex items-center gap-2 text-sm">
+                                    <i class="fa-solid fa-sign-out-alt"></i> Logout
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Logged Out View -->
+                    <div id="userLoggedOut" class="flex items-center gap-x-2">
+                        <a href="login.html" class="px-6 py-2 bg-transparent border border-cyan-400 text-cyan-400 font-semibold rounded-3xl hover:bg-cyan-400/10 transition text-sm">
+                            Login
+                        </a>
+                        <a href="register.html" class="px-6 py-2 bg-cyan-400 text-black font-semibold rounded-3xl hover:bg-white transition text-sm">
+                            Register
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Mobile menu -->
+                <button onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 flex items-center justify-center text-2xl">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden glass border-t">
+            <div class="px-8 py-6 flex flex-col gap-6 text-lg">
+                <a onclick="navigateToSection('hero');toggleMobileMenu()" class="flex items-center gap-3"><i class="fa-solid fa-house w-5"></i> Overview</a>
+                <a onclick="navigateToSection('dashboard');toggleMobileMenu()" class="flex items-center gap-3"><i class="fa-solid fa-chart-line w-5"></i> Dashboard</a>
+                <a onclick="navigateToSection('map');toggleMobileMenu()" class="flex items-center gap-3"><i class="fa-solid fa-map w-5"></i> Live Map</a>
+                <a onclick="navigateToSection('reports');toggleMobileMenu()" class="flex items-center gap-3"><i class="fa-solid fa-users w-5"></i> Community Reports</a>
+                <a onclick="navigateToSection('alerts');toggleMobileMenu()" class="flex items-center gap-3"><i class="fa-solid fa-bell w-5"></i> Alerts</a>
+                <a href="faq.html" class="flex items-center gap-3"><i class="fa-solid fa-circle-question w-5"></i> FAQ</a>
+                <div class="pt-4 border-t border-white/10 text-cyan-400 text-sm flex justify-between items-center">
+                    <span>Logged in as Juvie Mart • Bacolod City</span>
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- HERO SECTION -->
+    <section id="hero" class="pt-24 pb-16 hero-bg relative overflow-hidden" style="background: linear-gradient(90deg, #0a0a2e, #002233); background-size: 400% 400%;">
+        
+        <!-- Floating particles container -->
+        <div id="particles" class="absolute inset-0 pointer-events-none"></div>
+        
+        <div class="max-w-screen-2xl mx-auto px-8 grid md:grid-cols-2 gap-12 items-center">
+            <div class="space-y-8">
+                <div class="inline-flex items-center gap-x-2 bg-white/10 text-cyan-300 text-sm font-medium px-6 py-2 rounded-3xl border border-cyan-400/30">
+                    <span class="live-dot w-2 h-2 bg-cyan-400 rounded-full"></span>
+                    REAL-TIME • 2026 EDITION
+                </div>
+                
+                <h1 class="title-font text-7xl md:text-8xl leading-[1.05] tracking-[-3px] font-semibold">
+                    FloodWatch<span class="text-cyan-400">.</span><br>
+                    Your community.<br>
+                    Your safety.
+                </h1>
+                
+                <p class="text-2xl text-white/80 max-w-md">
+                    Community-powered flood monitoring with AI predictions, live sensors, and instant alerts.
+                </p>
+                
+                <div class="flex items-center gap-4">
+                    <button onclick="document.getElementById('reports').scrollIntoView({ behavior: 'smooth' })" 
+                            class="px-10 py-5 bg-cyan-400 hover:bg-white text-black font-semibold text-xl rounded-3xl flex items-center gap-x-3 shadow-xl shadow-cyan-500/50">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        SUBMIT REPORT NOW
+                    </button>
+                    
+                    <button onclick="navigateToSection('dashboard')" 
+                            class="px-8 py-5 border border-white/40 hover:border-cyan-400 text-white font-medium text-xl rounded-3xl flex items-center gap-x-3">
+                        <i class="fa-solid fa-eye"></i>
+                        LIVE DASHBOARD
+                    </button>
+                </div>
+                
+                <div class="flex items-center gap-x-8 text-sm">
+                    <div class="flex -space-x-4">
+                        <div class="w-8 h-8 bg-gradient-to-br from-pink-400 to-purple-400 rounded-2xl ring-2 ring-[#0a0a2e] flex items-center justify-center text-xs">👩‍🚀</div>
+                        <div class="w-8 h-8 bg-gradient-to-br from-emerald-400 to-cyan-400 rounded-2xl ring-2 ring-[#0a0a2e] flex items-center justify-center text-xs">👨‍🔧</div>
+                        <div class="w-8 h-8 bg-gradient-to-br from-amber-400 to-red-400 rounded-2xl ring-2 ring-[#0a0a2e] flex items-center justify-center text-xs">👩‍🌾</div>
+                    </div>
+                    <p class="text-white/70">12,458 residents monitoring floods in Bacolod &amp; Negros Occidental right now</p>
+                </div>
+            </div>
+            
+            <!-- Hero visual -->
+            <div class="relative hidden md:block">
+                <div class="glass rounded-3xl p-2 shadow-2xl neon-border">
+                    <div class="bg-[#001122] rounded-3xl p-8 relative overflow-hidden">
+                        <!-- Animated water level -->
+                        <div class="flex justify-between items-end mb-8">
+                            <div>
+                                <div class="text-cyan-400 text-sm tracking-widest">CURRENT RIVER LEVEL</div>
+                                <div id="hero-water-level" class="text-7xl font-bold tabular-nums counter">218</div>
+                                <div class="text-xs uppercase">cm • Rising 4cm/hr</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="px-6 py-1 text-xs font-bold rounded-3xl bg-gradient-to-r from-red-500 to-orange-500 inline-block">CRITICAL RISK</div>
+                                <div class="mt-6 flex justify-end gap-2">
+                                    <div class="text-5xl">🌊</div>
+                                    <div class="text-5xl animate-bounce">📍</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Fake waveform -->
+                        <div class="h-40 relative flex items-end gap-x-1">
+                            <div class="wave h-10 w-6 bg-gradient-to-t from-cyan-400 to-transparent rounded" style="animation-delay:0s"></div>
+                            <div class="wave h-14 w-6 bg-gradient-to-t from-cyan-400 to-transparent rounded" style="animation-delay:0.3s"></div>
+                            <div class="wave h-8 w-6 bg-gradient-to-t from-cyan-400 to-transparent rounded" style="animation-delay:0.7s"></div>
+                            <div class="wave h-20 w-6 bg-gradient-to-t from-cyan-400 to-transparent rounded" style="animation-delay:1s"></div>
+                            <div class="wave h-12 w-6 bg-gradient-to-t from-cyan-400 to-transparent rounded" style="animation-delay:0.4s"></div>
+                            <div class="wave h-16 w-6 bg-gradient-to-t from-cyan-400 to-transparent rounded" style="animation-delay:0.9s"></div>
+                            <div class="wave h-9 w-6 bg-gradient-to-t from-cyan-400 to-transparent rounded" style="animation-delay:0.2s"></div>
+                        </div>
+                        
+                        <div class="absolute bottom-8 right-8 text-xs text-white/60 font-mono">AI PREDICTION: PEAK IN 2H 14M</div>
+                    </div>
+                </div>
+                
+                <!-- Floating badge -->
+                <div class="absolute -top-4 -right-4 glass px-6 py-3 rounded-3xl flex items-center gap-3 shadow-2xl border border-cyan-400/40">
+                    <i class="fa-solid fa-satellite-dish text-3xl text-cyan-400"></i>
+                    <div>
+                        <div class="font-semibold">Satellite + IoT</div>
+                        <div class="text-xs text-cyan-300">42 drones scanning now</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- DASHBOARD SECTION -->
+    <section id="dashboard" class="max-w-screen-2xl mx-auto px-8 py-20 border-t border-white/10">
+        <div class="flex justify-between items-end mb-12">
+            <div>
+                <h2 class="title-font text-5xl tracking-[-1px]">Live Community Dashboard</h2>
+                <p class="text-cyan-300">Updated moments ago • Bacolod City, Western Visayas</p>
+            </div>
+            <div onclick="refreshDashboard()" class="flex items-center cursor-pointer text-sm uppercase font-medium text-cyan-400 hover:text-white">
+                <i class="fa-solid fa-rotate mr-2"></i>
+                REFRESH LIVE DATA
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Card 1 -->
+            <div class="glass rounded-3xl p-8 card-hover">
+                <div class="flex justify-between">
+                    <div>
+                        <p class="uppercase text-xs text-white/60 mb-1">Water Level @ Banago River</p>
+                        <div id="dash-water" class="text-6xl font-bold tabular-nums counter"><?php echo $currentWaterLevel; ?></div>
+                        <div class="text-emerald-400 flex items-center"><i class="fa-solid fa-arrow-trend-up mr-1"></i> +8cm since last hour</div>
+                    </div>
+                    <i class="fa-solid fa-water text-6xl text-cyan-400/40"></i>
+                </div>
+                <div class="mt-6 h-3 bg-white/10 rounded-3xl overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-cyan-400 to-blue-500 rounded-3xl w-3/4"></div>
+                </div>
+                <div class="flex justify-between text-xs text-white/60 mt-2">
+                    <span>0 cm</span>
+                    <span class="text-red-400">300 cm DANGER</span>
+                </div>
+            </div>
+            
+            <!-- Card 2 -->
+            <div class="glass rounded-3xl p-8 card-hover">
+                <div class="flex justify-between mb-8">
+                    <div>
+                        <p class="uppercase text-xs text-white/60">FLOOD RISK INDEX</p>
+                        <div id="risk-badge" class="inline-flex items-center text-3xl font-bold mt-2 <?php echo $riskLevel === 'CRITICAL' ? 'text-red-400' : ($riskLevel === 'HIGH' ? 'text-orange-400' : 'text-yellow-400'); ?>">
+                            <?php echo $riskLevel; ?>
+                        </div>
+                    </div>
+                    <div class="text-right text-xs">
+                        <div class="px-5 py-2 rounded-3xl <?php echo $riskLevel === 'CRITICAL' ? 'bg-red-500/10 text-red-400' : 'bg-amber-400/10 text-amber-400'; ?>">
+                            <i class="fa-solid fa-triangle-exclamation"></i> AI CONFIDENCE 98%
+                        </div>
+                    </div>
+                </div>
+                <div class="text-white/70">Next 6 hours prediction: <span class="font-semibold text-white">MAJOR FLOODING POSSIBLE</span></div>
+            </div>
+            
+            <!-- Card 3 -->
+            <div class="glass rounded-3xl p-8 card-hover flex flex-col justify-between">
+                <div>
+                    <p class="uppercase text-xs text-white/60">ACTIVE COMMUNITY MONITORS</p>
+                    <div id="active-count" class="text-6xl font-bold tabular-nums counter"><?php echo $activeSensors; ?></div>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <div class="text-emerald-400">+19 joined today</div>
+                    <div class="text-white/60">4.8 km² covered</div>
+                </div>
+                <div class="h-px bg-white/10 my-4"></div>
+                <div class="flex items-center text-xs text-white/70">
+                    <div class="flex-1 h-2.5 bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-full"></div>
+                    <span class="px-4">98% participation rate</span>
+                </div>
+            </div>
+            
+            <!-- Card 4 -->
+            <div class="glass rounded-3xl p-8 card-hover">
+                <p class="uppercase text-xs text-white/60 mb-4">24-HOUR RAINFALL</p>
+                <div class="flex items-baseline gap-x-3">
+                    <div class="text-6xl font-bold">187</div>
+                    <div class="text-2xl text-cyan-400">mm</div>
+                </div>
+                <div class="text-sm text-white/70 mt-2">Heaviest since Typhoon Odette • 2021</div>
+                <div class="mt-auto pt-8 flex gap-4">
+                    <div class="text-xs flex-1 bg-white/10 px-4 py-3 rounded-2xl text-center">12:00<br><span class="font-semibold">42mm</span></div>
+                    <div class="text-xs flex-1 bg-white/10 px-4 py-3 rounded-2xl text-center">18:00<br><span class="font-semibold">81mm</span></div>
+                    <div class="text-xs flex-1 bg-gradient-to-br from-cyan-400/20 to-cyan-400 px-4 py-3 rounded-2xl text-center text-black font-medium">NOW<br><span class="font-semibold">64mm</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- LIVE MAP SECTION -->
+    <section id="map" class="max-w-screen-2xl mx-auto px-8 py-16 border-t border-white/10 bg-[#001122]">
+        <div class="flex justify-between mb-8">
+            <h2 class="title-font text-5xl tracking-[-1px]">Interactive Flood Map • Bacolod + Vicinity</h2>
+            <div class="text-cyan-400 flex items-center text-sm font-medium">
+                <i class="fa-solid fa-satellite mr-2"></i>
+                LIVE SATELLITE OVERLAY
+            </div>
+        </div>
+        
+        <!-- Google Map -->
+        <div class="glass rounded-3xl relative h-[520px] overflow-hidden neon-border">
+            <div id="floodMap" style="width: 100%; height: 100%; border-radius: 24px;"></div>
+            
+            <!-- Flooded zones overlay -->
+            <div class="absolute top-[120px] left-[180px] w-72 h-72 bg-cyan-400/20 rounded-full blur-3xl animate-pulse pointer-events-none"></div>
+            <div class="absolute bottom-[140px] right-[200px] w-64 h-64 bg-red-400/20 rounded-full blur-3xl pointer-events-none" style="animation-delay:1.5s"></div>
+            
+            <!-- Legend -->
+            <div class="absolute bottom-8 left-8 glass px-6 py-4 rounded-3xl text-xs flex gap-6 pointer-events-auto z-10">
+                <div class="flex items-center"><span class="inline-block w-3 h-3 bg-red-400 rounded mr-2"></span> High Risk</div>
+                <div class="flex items-center"><span class="inline-block w-3 h-3 bg-amber-400 rounded mr-2"></span> Moderate</div>
+                <div class="flex items-center"><span class="inline-block w-3 h-3 bg-cyan-400 rounded mr-2"></span> Community Reported</div>
+            </div>
+            
+            <!-- AI prediction overlay -->
+            <div class="absolute top-8 right-8 glass text-sm max-w-[220px] p-5 rounded-3xl pointer-events-auto z-10">
+                <div class="flex items-center justify-between text-cyan-400 mb-3"><span>AI FLOOD PATH</span> <i class="fa-solid fa-robot"></i></div>
+                <div class="text-white text-base font-medium">Water expected to reach Barangay 1 in <span class="font-bold text-amber-400">47 minutes</span></div>
+                <div class="text-xs mt-2 text-white/60">Evacuation route highlighted in blue</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- COMMUNITY REPORTS + SUBMIT FORM -->
+    <section id="reports" class="max-w-screen-2xl mx-auto px-8 py-20 border-t border-white/10">
+        <div class="grid md:grid-cols-12 gap-8">
+            
+            <!-- Recent Reports -->
+            <div class="md:col-span-7">
+                <div class="flex items-center justify-between mb-8">
+                    <h2 class="title-font text-5xl tracking-[-1px]">Latest Community Reports</h2>
+                    <span class="px-4 py-2 text-xs font-medium bg-white/10 rounded-3xl"><?php echo count($_SESSION['reports']); ?> reports today</span>
+                </div>
+                
+                <div class="space-y-4" id="reports-container">
+                    <?php foreach ($_SESSION['reports'] as $report): ?>
+                    <div class="glass rounded-3xl p-6 flex gap-6 card-hover">
+                        <div class="flex-shrink-0 text-4xl">
+                            <?php 
+                                if ($report['severity'] === 'High') echo '🔴';
+                                elseif ($report['severity'] === 'Medium') echo '🟠';
+                                else echo '🟢';
+                            ?>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between">
+                                <div class="font-semibold"><?php echo htmlspecialchars($report['location']); ?></div>
+                                <div class="text-xs text-white/50"><?php echo htmlspecialchars($report['time']); ?></div>
+                            </div>
+                            <div class="text-cyan-400 text-sm mt-px"><?php echo htmlspecialchars($report['reporter']); ?></div>
+                            <p class="mt-3 text-white/80"><?php echo htmlspecialchars($report['description']); ?></p>
+                            <div class="text-xs uppercase mt-4 inline-block px-4 py-1 rounded-3xl <?php echo $report['severity'] === 'High' ? 'bg-red-500/10 text-red-400' : ($report['severity'] === 'Medium' ? 'bg-amber-400/10 text-amber-400' : 'bg-emerald-400/10 text-emerald-400'); ?>">
+                                <?php echo strtoupper($report['severity']); ?> SEVERITY
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            
+            <!-- Submit a new report -->
+            <div class="md:col-span-5">
+                <div class="glass rounded-3xl p-8 sticky top-8">
+                    <h3 class="text-3xl font-semibold mb-2">Submit Flood Report</h3>
+                    <p class="text-white/60 mb-8">Help your neighbors. Reports are verified within 60 seconds by AI + volunteers.</p>
+                    
+                    <form class="space-y-6" id="reportForm">
+                        <div>
+                            <label class="block text-xs uppercase mb-2 text-white/60">Your Location</label>
+                            <input type="text" id="locationInput" value="Barangay 1, Bacolod City" class="w-full bg-white/10 border border-white/20 focus:border-cyan-400 rounded-3xl px-6 py-5 text-white placeholder:text-white/40 outline-none" placeholder="Street or Barangay" required>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-xs uppercase mb-2 text-white/60">Severity</label>
+                            <div class="grid grid-cols-3 gap-3">
+                                <label class="flex items-center justify-center cursor-pointer border border-white/10 hover:border-red-400 rounded-3xl py-4 text-center has-[:checked]:border-red-400 has-[:checked]:bg-red-400/10">
+                                    <input type="radio" name="severity" value="High" class="peer hidden" id="severityHigh" checked>
+                                    <span class="peer-checked:text-red-400">🔴 HIGH</span>
+                                </label>
+                                <label class="flex items-center justify-center cursor-pointer border border-white/10 hover:border-amber-400 rounded-3xl py-4 text-center has-[:checked]:border-amber-400 has-[:checked]:bg-amber-400/10">
+                                    <input type="radio" name="severity" value="Medium" class="peer hidden" id="severityMedium">
+                                    <span class="peer-checked:text-amber-400">🟠 MEDIUM</span>
+                                </label>
+                                <label class="flex items-center justify-center cursor-pointer border border-white/10 hover:border-emerald-400 rounded-3xl py-4 text-center has-[:checked]:border-emerald-400 has-[:checked]:bg-emerald-400/10">
+                                    <input type="radio" name="severity" value="Low" class="peer hidden" id="severityLow">
+                                    <span class="peer-checked:text-emerald-400">🟢 LOW</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-xs uppercase mb-2 text-white/60">What’s happening?</label>
+                            <textarea id="descriptionInput" rows="4" class="w-full bg-white/10 border border-white/20 focus:border-cyan-400 rounded-3xl px-6 py-5 text-white outline-none resize-none" placeholder="Water entering houses? Road blocked? River rising?"></textarea>
+                        </div>
+                        
+                        <button type="button" onclick="submitReportViaAPI()" class="w-full py-6 bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-semibold text-xl rounded-3xl flex items-center justify-center gap-3 shadow-2xl hover:shadow-cyan-500/50 transition-all">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            BROADCAST TO THE NETWORK
+                        </button>
+                    </form>
+                    
+                    <p class="text-[10px] text-center text-white/40 mt-8">Your report will appear instantly on the map and alert nearby residents.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ALERTS SECTION -->
+    <section id="alerts" class="max-w-screen-2xl mx-auto px-8 py-20 border-t border-white/10 bg-gradient-to-b from-transparent to-[#001122]">
+        <h2 class="title-font text-5xl tracking-[-1px] mb-10">Active Alerts &amp; Notifications</h2>
+        
+        <div class="grid md:grid-cols-3 gap-6">
+            <?php foreach ($_SESSION['alerts'] as $alert): ?>
+            <div class="glass rounded-3xl p-6 flex gap-4 card-hover">
+                <div class="text-4xl">🚨</div>
+                <div class="flex-1">
+                    <p class="font-medium"><?php echo htmlspecialchars($alert['message']); ?></p>
+                    <div class="text-xs text-cyan-300 mt-3"><?php echo htmlspecialchars($alert['time']); ?></div>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </section>
+    
+    <!-- FOOTER / FINAL CTA -->
+    <footer class="bg-black/40 border-t border-white/10 py-16">
+        <div class="max-w-screen-2xl mx-auto px-8 text-center">
+            <div class="text-4xl title-font mb-4">FloodWatch is built by the community, for the community.</div>
+            <p class="max-w-md mx-auto text-white/60">2026 • Powered by real-time sensors, satellite imagery, and 12,458+ active residents in Western Visayas</p>
+            
+            <div class="mt-12 flex flex-wrap justify-center gap-x-8 text-sm">
+                <a href="#" class="hover:text-cyan-400">Privacy &amp; Data Policy</a>
+                <a href="#" class="hover:text-cyan-400">How AI works</a>
+                <a href="#" class="hover:text-cyan-400">Join as a sensor volunteer</a>
+                <a href="#" class="hover:text-cyan-400">Download mobile app</a>
+                <a href="#" class="hover:text-cyan-400">Contact LGU Bacolod</a>
+            </div>
+            
+            <div class="text-xs mt-12 text-white/30">Made as a complete self-contained HTML + PHP + CSS demo • Ready to deploy on any PHP server</div>
+        </div>
+    </footer>
+    
+    <script>
+        /**
+         * Main script for 2026 slick animations & interactivity
+         */
+        
+        // TailwindCSS initialization
+        function initializeTailwind() {
+            return {
+                config(userConfig = {}) {
+                    return {
+                        content: [],
+                        theme: {
+                            extend: {}
+                        },
+                        plugins: [],
+                        ...userConfig,
+                    }
+                },
+                theme: {
+                    extend: {},
+                }
+            }
+        }
+        
+        // Create floating water particles in hero
+        function createParticles() {
+            const container = document.getElementById('particles')
+            for (let i = 0; i < 65; i++) {
+                const particle = document.createElement('div')
+                particle.classList.add('particle')
+                
+                const size = Math.random() * 6 + 3
+                particle.style.width = `${size}px`
+                particle.style.height = `${size}px`
+                
+                particle.style.left = `${Math.random() * 100}%`
+                particle.style.animationDuration = `${Math.random() * 10 + 8}s`
+                particle.style.animationDelay = `-${Math.random() * 15}s`
+                particle.style.opacity = Math.random() * 0.6 + 0.3
+                
+                container.appendChild(particle)
+                
+                // Cleanup after animation
+                setTimeout(() => {
+                    if (particle.parentNode) particle.parentNode.removeChild(particle)
+                }, 25000)
+            }
+        }
+        
+        // Smooth number counter animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter')
+            
+            counters.forEach(counter => {
+                const target = parseInt(counter.textContent) || 200
+                let count = 0
+                const increment = Math.ceil(target / 42)
+                
+                const timer = setInterval(() => {
+                    count += increment
+                    if (count >= target) {
+                        count = target
+                        clearInterval(timer)
+                    }
+                    counter.textContent = count
+                }, 18)
+            })
+        }
+        
+        // Mobile menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu')
+            menu.classList.toggle('hidden')
+        }
+        
+        // Fake real-time dashboard refresh
+        function refreshDashboard() {
+            const waterEl = document.getElementById('dash-water')
+            const riskEl = document.getElementById('risk-badge')
+            const activeEl = document.getElementById('active-count')
+            
+            // Small random update
+            let water = parseInt(waterEl.textContent)
+            water += Math.floor(Math.random() * 9) + 2
+            waterEl.style.transitionDuration = '800ms'
+            waterEl.textContent = water
+            
+            if (water > 220) {
+                riskEl.innerHTML = `CRITICAL <span class="text-xs ml-2">🚨</span>`
+                riskEl.className = 'inline-flex items-center text-3xl font-bold mt-2 text-red-400'
+            }
+            
+            activeEl.textContent = parseInt(activeEl.textContent) + Math.floor(Math.random() * 4) + 1
+            
+            // Add a small toast
+            const toast = document.createElement('div')
+            toast.style.cssText = 'position:fixed; bottom:24px; right:24px; background:rgba(0,240,255,0.9); color:#000; padding:16px 24px; border-radius:9999px; font-weight:600; box-shadow:0 10px 15px -3px rgb(0 240 255)'
+            toast.innerHTML = '✅ Live data updated from 8 new sensors'
+            document.body.appendChild(toast)
+            
+            setTimeout(() => toast.remove(), 2800)
+            
+            // Refresh reports container if needed
+            console.log('%c🚀 Dashboard refreshed (PHP backend would sync here)', 'color:#00f0ff; font-family:monospace')
+        }
+        
+        // Navigate to page or section
+        function navigateToSection(section) {
+            const el = document.getElementById(section)
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth' })
+            }
+        }
+        
+        // Navigate to different page
+        function navigateTo(url) {
+            window.location.href = url;
+        }
+        
+        // ===== AUTHENTICATION FUNCTIONS =====
+        
+        // Check authentication status on page load
+        async function checkAuthStatus() {
+            try {
+                const response = await fetch('api.php?action=me');
+                const data = await response.json();
+                
+                if (data.success && data.user) {
+                    // User is logged in
+                    updateUIForLoggedIn(data.user);
+                } else {
+                    // User is not logged in
+                    updateUIForLoggedOut();
+                }
+            } catch (error) {
+                console.log('Auth check failed:', error);
+                updateUIForLoggedOut();
+            }
+        }
+        
+        // Update UI when user is logged in
+        function updateUIForLoggedIn(user) {
+            const loggedInDiv = document.getElementById('userLoggedIn');
+            const loggedOutDiv = document.getElementById('userLoggedOut');
+            
+            if (loggedInDiv) {
+                document.getElementById('userName').textContent = user.fullName || 'User';
+                document.getElementById('userEmail').textContent = user.email;
+                document.getElementById('userBarangay').textContent = user.barangay || 'Barangay';
+                loggedInDiv.classList.remove('hidden');
+                
+                // Show admin link if user is admin
+                if (user.role === 'admin' || user.role === 'moderator') {
+                    document.getElementById('adminMenuLink').classList.remove('hidden');
+                }
+            }
+            
+            if (loggedOutDiv) {
+                loggedOutDiv.classList.add('hidden');
+            }
+        }
+        
+        // Update UI when user is logged out
+        function updateUIForLoggedOut() {
+            const loggedInDiv = document.getElementById('userLoggedIn');
+            const loggedOutDiv = document.getElementById('userLoggedOut');
+            
+            if (loggedInDiv) {
+                loggedInDiv.classList.add('hidden');
+            }
+            
+            if (loggedOutDiv) {
+                loggedOutDiv.classList.remove('hidden');
+            }
+        }
+        
+        // Toggle user menu
+        function toggleUserMenu() {
+            const menu = document.getElementById('userMenu');
+            if (menu) {
+                menu.classList.toggle('hidden');
+                
+                // Close menu when clicking outside
+                document.addEventListener('click', function closeMenu(e) {
+                    if (!menu.parentElement.contains(e.target) && !menu.contains(e.target)) {
+                        menu.classList.add('hidden');
+                        document.removeEventListener('click', closeMenu);
+                    }
+                });
+            }
+        }
+        
+        // Perform logout
+        async function performLogout() {
+            const confirmed = confirm('Are you sure you want to logout?');
+            if (!confirmed) return;
+            
+            try {
+                const response = await fetch('api.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        action: 'logout'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Redirect to login
+                    window.location.href = 'login.html';
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+                // Still redirect on error
+                window.location.href = 'login.html';
+            }
+        }
+        
+        // Main initialization on load
+        window.onload = function () {
+            initializeTailwind()
+            createParticles()
+            animateCounters()
+            initializeGoogleMap()
+            setupOfflineSupport()
+            checkAuthStatus()
+            
+            console.log('%c✅ FloodWatch 2026 full-stack demo loaded successfully (HTML + PHP + CSS)', 'background:#00f0ff;color:#001122;font-size:13px;padding:2px 6px;border-radius:3px')
+            
+            // Simulate live water level increase in hero every 4 seconds
+            let heroWater = 218
+            setInterval(() => {
+                heroWater += Math.random() * 1.5 + 0.8
+                const heroEl = document.getElementById('hero-water-level')
+                if (heroEl) heroEl.textContent = Math.round(heroWater)  
+            }, 4000)
+            
+            console.log('📍 PHP backend is active. Reports are stored in session and displayed instantly.')
+            console.log('🌐 This is a complete, deployable single-file full-stack application.')
+        }
+        
+        // Offline Support System
+        function setupOfflineSupport() {
+            // Detect online/offline status
+            window.addEventListener('online', () => {
+                showOfflineIndicator(false);
+                syncOfflineData();
+                console.log('✅ Back online - syncing data');
+            });
+            
+            window.addEventListener('offline', () => {
+                showOfflineIndicator(true);
+                console.log('❌ You are offline - using cached data');
+            });
+            
+            // Show initial status
+            showOfflineIndicator(!navigator.onLine);
+            
+            // Setup local storage for reports
+            setupLocalStorage();
+        }
+        
+        // Offline indicator UI
+        function showOfflineIndicator(isOffline) {
+            let indicator = document.getElementById('offlineIndicator');
+            
+            if (!indicator) {
+                indicator = document.createElement('div');
+                indicator.id = 'offlineIndicator';
+                indicator.style.cssText = `
+                    position: fixed;
+                    top: 80px;
+                    right: 20px;
+                    padding: 12px 20px;
+                    border-radius: 9999px;
+                    font-weight: 600;
+                    z-index: 40;
+                    transition: all 0.3s ease;
+                    display: none;
+                `;
+                document.body.appendChild(indicator);
+            }
+            
+            if (isOffline) {
+                indicator.style.display = 'flex';
+                indicator.style.alignItems = 'center';
+                indicator.style.gap = '8px';
+                indicator.style.background = 'rgba(246, 70, 93, 0.95)';
+                indicator.style.color = '#fff';
+                indicator.style.border = '1px solid rgba(246, 70, 93, 0.5)';
+                indicator.innerHTML = '<i class="fa-solid fa-wifi-slash"></i> OFFLINE MODE • Cached Data Only';
+            } else {
+                indicator.style.display = 'flex';
+                indicator.style.alignItems = 'center';
+                indicator.style.gap = '8px';
+                indicator.style.background = 'rgba(76, 175, 80, 0.95)';
+                indicator.style.color = '#fff';
+                indicator.style.border = '1px solid rgba(76, 175, 80, 0.5)';
+                indicator.innerHTML = '<i class="fa-solid fa-wifi"></i> ONLINE • Full Access';
+                setTimeout(() => indicator.style.display = 'none', 3000);
+            }
+        }
+        
+        // Local Storage Setup
+        function setupLocalStorage() {
+            window.floodWatchDB = {
+                getReports: () => JSON.parse(localStorage.getItem('floodwatch_reports') || '[]'),
+                saveReport: (report) => {
+                    const reports = window.floodWatchDB.getReports();
+                    report.id = Date.now();
+                    report.synced = false;
+                    reports.push(report);
+                    localStorage.setItem('floodwatch_reports', JSON.stringify(reports));
+                    return report;
+                },
+                markSynced: (id) => {
+                    const reports = window.floodWatchDB.getReports();
+                    const report = reports.find(r => r.id === id);
+                    if (report) report.synced = true;
+                    localStorage.setItem('floodwatch_reports', JSON.stringify(reports));
+                }
+            };
+        }
+        
+        // Sync offline data when back online
+        function syncOfflineData() {
+            if (!navigator.onLine) return;
+            
+            const reports = window.floodWatchDB.getReports();
+            const unsyncedReports = reports.filter(r => !r.synced);
+            
+            unsyncedReports.forEach(report => {
+                // Send to server
+                submitReport(report.location, report.severity, report.description)
+                    .then(() => window.floodWatchDB.markSynced(report.id))
+                    .catch(err => console.log('Sync failed:', err));
+            });
+            
+            if (unsyncedReports.length > 0) {
+                showToast(`✅ Synced ${unsyncedReports.length} offline reports`, 'success');
+            }
+        }
+        
+        // Leaflet Map initialization
+        function initializeGoogleMap() {
+            const mapContainer = document.getElementById('floodMap');
+            if (!mapContainer) return;
+            
+            // Bacolod City coordinates
+            const bacolodCenter = [10.4009, 122.9747];
+            
+            const map = L.map('floodMap').setView(bacolodCenter, 12);
+            
+            // Use CartoDB tiles (satellite-style, no blocking issues)
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                attribution: '© CartoDB',
+                maxZoom: 19,
+                subdomains: 'abcd'
+            }).addTo(map);
+            
+            // Add flood risk markers
+            const markers = [
+                { lat: 10.3950, lng: 122.9680, title: 'Banago River - CRITICAL', severity: 'critical' },
+                { lat: 10.4050, lng: 122.9800, title: 'Barangay 1 - WATCH', severity: 'watch' },
+                { lat: 10.4150, lng: 122.9900, title: 'Silay City - STABLE', severity: 'stable' },
+                { lat: 10.3800, lng: 122.9600, title: 'Talisay Coast - WATCH', severity: 'watch' }
+            ];
+            
+            markers.forEach(marker => {
+                let color = '';
+                let popupText = '';
+                if (marker.severity === 'critical') {
+                    color = '#f6465d';
+                    popupText = '🔴 CRITICAL - Rising rapidly';
+                } else if (marker.severity === 'watch') {
+                    color = '#ffc107';
+                    popupText = '🟠 WATCH - Monitor situation';
+                } else {
+                    color = '#4caf50';
+                    popupText = '🟢 STABLE - All clear';
+                }
+                
+                const circleMarker = L.circleMarker([marker.lat, marker.lng], {
+                    radius: 10,
+                    fillColor: color,
+                    color: '#fff',
+                    weight: 2,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                }).addTo(map);
+                
+                circleMarker.bindPopup(popupText);
+            });
+            
+            // Add flood risk circles
+            const floodZones = [
+                { lat: 10.3950, lng: 122.9680, radius: 2000, severity: 'critical' },
+                { lat: 10.3800, lng: 122.9600, radius: 1500, severity: 'warning' }
+            ];
+            
+            floodZones.forEach(zone => {
+                let fillColor = zone.severity === 'critical' ? '#f6465d' : '#ffc107';
+                L.circle([zone.lat, zone.lng], {
+                    radius: zone.radius,
+                    color: fillColor,
+                    weight: 2,
+                    opacity: 0.5,
+                    fill: true,
+                    fillColor: fillColor,
+                    fillOpacity: 0.15
+                }).addTo(map);
+            });
+        }
+
+    </script>
+    
+    <!-- API Client -->
+    <script src="api-client.js"></script>
+    <script src="performance.js"></script>
+    
+    <!-- Report Submission via API -->
+    <script>
+        async function submitReportViaAPI() {
+            const submitBtn = event.target;
+            const location = document.getElementById('locationInput')?.value || '';
+            const description = document.getElementById('descriptionInput')?.value || '';
+            const severity = document.querySelector('input[name="severity"]:checked')?.value || 'Medium';
+            
+            if (!location.trim() || !description.trim()) {
+                showToast('❌ Location and description are required', 'error');
+                return;
+            }
+            
+            // Loading state
+            const originalHTML = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class=\"fas fa-spinner animate-spin mr-2\"></i>Submitting...';
+            submitBtn.style.opacity = '0.7';
+            
+            try {
+                const result = await submitReport(location, severity, description);
+                
+                if (result && result.success) {
+                    showToast('✅ Report submitted successfully!', 'success');
+                    
+                    // Clear form
+                    document.getElementById('locationInput').value = '';
+                    document.getElementById('descriptionInput').value = '';
+                    document.getElementById('severityHigh').checked = true;
+                    
+                    // Refresh reports list with optimization
+                    optimizedRefreshReports();
+                } else {
+                    showToast('❌ Failed to submit report', 'error');
+                }
+            } catch (error) {
+                console.error('Report submission error:', error);
+                showToast('❌ Error submitting report', 'error');
+            } finally {
+                // Restore button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalHTML;
+                submitBtn.style.opacity = '1';
+            }
+        }
+        
+        function showToast(message, type = 'info') {
+            const bgColor = type === 'success' ? 'rgba(76, 175, 80, 0.9)' : 
+                           type === 'error' ? 'rgba(246, 70, 93, 0.9)' :
+                           'rgba(0, 240, 255, 0.9)';
+            const textColor = type === 'info' ? '#000' : '#fff';
+            
+            const toast = document.createElement('div');
+            toast.style.cssText = `position:fixed; bottom:24px; right:24px; background:${bgColor}; color:${textColor}; padding:16px 24px; border-radius:9999px; font-weight:600; box-shadow:0 10px 15px -3px rgba(0,0,0,0.3); z-index:9999;`;
+            toast.innerHTML = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.remove(), 3000);
+        }
+    </script>

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="FloodWatch - Your Personal Community Monitoring Dashboard">
+    <meta name="theme-color" content="#0a0a2e">
+    <title>FloodWatch • My Dashboard - Personal Flood Monitoring</title>
+    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75' text-anchor='middle' x='50'>🌊</text></svg>">
+    <link rel="manifest" href="manifest.json">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <script>
+        window.pageStartTime = performance.now();
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed:', err));
+        }
+    </script>
+</head>
+<body class="tail-container text-white min-h-screen" style="background: linear-gradient(90deg, #0a0a2e 0%, #001122 100%);">
+    
+    <!-- Floating particles background -->
+    <div id="particles" class="absolute inset-0 pointer-events-none"></div>
+    
+    <!-- Navbar -->
+    <nav class="relative z-50 glass border-b border-white/10 sticky top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-2xl flex items-center justify-center text-2xl neon-border">
+                        🌊
+                    </div>
+                    <div>
+                        <h1 class="title-font text-2xl tracking-[-1px] text-white">FloodWatch</h1>
+                        <p class="text-[8px] text-cyan-400 font-medium">MY DASHBOARD</p>
+                    </div>
+                </a>
+                
+                <!-- Right side -->
+                <div class="flex items-center gap-x-4">
+                    <!-- Live indicator -->
+                    <div class="hidden sm:flex items-center bg-emerald-500/10 text-emerald-400 text-xs font-medium px-4 h-8 rounded-3xl border border-emerald-400/30">
+                        <div class="w-2 h-2 bg-emerald-400 rounded-full live-dot mr-2"></div>
+                        LIVE
+                    </div>
+                    
+                    <!-- User Menu -->
+                    <div class="flex items-center gap-x-3">
+                        <!-- Dashboard Links -->
+                        <a href="index.html" class="px-4 py-2 text-xs font-semibold text-cyan-400 hover:text-white transition flex items-center gap-2">
+                            <i class="fa-solid fa-globe"></i>
+                            <span class="hidden sm:inline">Community</span>
+                        </a>
+                        
+                        <div id="adminLinkContainer" class="hidden">
+                            <a href="admin-dashboard.html" class="px-4 py-2 text-xs font-semibold text-amber-400 hover:text-white transition flex items-center gap-2">
+                                <i class="fa-solid fa-shield"></i>
+                                <span class="hidden sm:inline">Admin</span>
+                            </a>
+                        </div>
+                        
+                        <!-- User Dropdown -->
+                        <div class="flex items-center gap-x-2 bg-white/10 hover:bg-white/20 px-4 h-10 rounded-3xl cursor-pointer" onclick="toggleUserMenu()">
+                            <i class="fa-solid fa-circle-user text-cyan-400 text-xl"></i>
+                            <div class="text-sm font-medium hidden sm:block" id="userName">User</div>
+                            <i class="fa-solid fa-chevron-down text-cyan-400 text-xs"></i>
+                        </div>
+                        
+                        <!-- User Menu Dropdown -->
+                        <div id="userMenu" class="hidden absolute top-20 right-8 glass rounded-3xl p-2 min-w-48 shadow-2xl border border-cyan-400/20 z-50">
+                            <div class="px-4 py-3 border-b border-white/10 text-xs">
+                                <div id="userEmail" class="text-white/70">user@example.com</div>
+                                <div id="userBarangay" class="text-cyan-400 font-semibold mt-1">Barangay</div>
+                            </div>
+                            <button onclick="navigateTo('user-dashboard.html')" class="w-full text-left px-4 py-3 hover:bg-white/10 rounded-2xl transition flex items-center gap-2 text-sm">
+                                <i class="fa-solid fa-chart-line"></i> My Dashboard
+                            </button>
+                            <button onclick="navigateTo('index.html')" class="w-full text-left px-4 py-3 hover:bg-white/10 rounded-2xl transition flex items-center gap-2 text-sm">
+                                <i class="fa-solid fa-globe"></i> Community Map
+                            </button>
+                            <button onclick="navigateTo('faq.html')" class="w-full text-left px-4 py-3 hover:bg-white/10 rounded-2xl transition flex items-center gap-2 text-sm">
+                                <i class="fa-solid fa-circle-question"></i> Help & FAQ
+                            </button>
+                            <div class="border-t border-white/10 mt-2 pt-2">
+                                <button onclick="performLogout()" class="w-full text-left px-4 py-3 hover:bg-red-500/10 text-red-400 rounded-2xl transition flex items-center gap-2 text-sm">
+                                    <i class="fa-solid fa-sign-out-alt"></i> Logout
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Container -->
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <!-- Welcome Section -->
+        <div class="mb-12">
+            <div class="glass rounded-3xl p-8 neon-border">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+                    <div>
+                        <h1 class="title-font text-4xl sm:text-5xl mb-2">Welcome, <span id="welcomeName" class="text-cyan-400">User</span>! 👋</h1>
+                        <p class="text-white/70 text-lg">
+                            <i class="fa-solid fa-map-pin text-cyan-400 mr-2"></i>
+                            <span id="userLocation">Bacolod City</span> • 
+                            <span id="lastSync" class="text-emerald-400">Just now</span>
+                        </p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button onclick="navigateTo('index.html')" class="px-6 py-3 bg-transparent border border-cyan-400 text-cyan-400 font-semibold rounded-3xl hover:bg-cyan-400/10 transition flex items-center gap-2">
+                            <i class="fa-solid fa-map"></i> <span class="hidden sm:inline">View Map</span>
+                        </button>
+                        <button onclick="toggleReportForm()" class="px-6 py-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-semibold rounded-3xl hover:shadow-lg hover:shadow-cyan-500/50 transition flex items-center gap-2">
+                            <i class="fa-solid fa-plus"></i> <span class="hidden sm:inline">Report Now</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Impact Stats -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <div class="glass rounded-3xl p-6 neon-border text-center">
+                <div class="text-4xl font-bold text-cyan-400 mb-2" id="statsReports">0</div>
+                <p class="text-white/70 text-sm">Reports Submitted</p>
+                <div class="mt-2 text-xs text-emerald-400">+2 this week</div>
+            </div>
+            <div class="glass rounded-3xl p-6 neon-border text-center">
+                <div class="text-4xl font-bold text-green-400 mb-2" id="statsVerified">0</div>
+                <p class="text-white/70 text-sm">Reports Verified</p>
+                <div class="mt-2 text-xs text-emerald-400">+1 this week</div>
+            </div>
+            <div class="glass rounded-3xl p-6 neon-border text-center">
+                <div class="text-4xl font-bold text-amber-400 mb-2" id="statsLivesHelped">0</div>
+                <p class="text-white/70 text-sm">Lives Helped</p>
+                <div class="mt-2 text-xs text-emerald-400">Community impact</div>
+            </div>
+            <div class="glass rounded-3xl p-6 neon-border text-center">
+                <div class="text-4xl font-bold text-blue-400 mb-2" id="statsRank">—</div>
+                <p class="text-white/70 text-sm">Community Rank</p>
+                <div class="mt-2 text-xs text-cyan-400">Active Monitor</div>
+            </div>
+        </div>
+        
+        <!-- Quick Report Form (Hidden by default) -->
+        <div id="quickReportForm" class="hidden mb-12 glass rounded-3xl p-8 neon-border">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="title-font text-3xl">Submit Flood Report</h2>
+                <button onclick="toggleReportForm()" class="text-white/60 hover:text-white text-2xl">
+                    <i class="fa-solid fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="quickReportSubmit" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-xs uppercase mb-2 text-white/60 font-medium">Location</label>
+                    <input type="text" name="location" placeholder="Area name..." class="w-full bg-white/10 border border-white/20 focus:border-cyan-400 rounded-3xl px-6 py-3 text-white placeholder:text-white/40 outline-none transition" required>
+                </div>
+                <div>
+                    <label class="block text-xs uppercase mb-2 text-white/60 font-medium">Severity</label>
+                    <select name="severity" class="w-full bg-white/10 border border-white/20 focus:border-cyan-400 rounded-3xl px-6 py-3 text-white outline-none transition appearance-none cursor-pointer">
+                        <option value="Low">Low</option>
+                        <option value="Medium" selected>Medium</option>
+                        <option value="High">High</option>
+                        <option value="Critical">Critical</option>
+                    </select>
+                </div>
+                <div class="sm:col-span-2">
+                    <label class="block text-xs uppercase mb-2 text-white/60 font-medium">Description</label>
+                    <textarea name="description" placeholder="What did you observe?" rows="4" class="w-full bg-white/10 border border-white/20 focus:border-cyan-400 rounded-3xl px-6 py-3 text-white placeholder:text-white/40 outline-none transition"></textarea>
+                </div>
+                <div class="sm:col-span-2 flex gap-3">
+                    <button type="submit" class="flex-1 py-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-bold rounded-3xl hover:shadow-lg hover:shadow-cyan-500/50 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i> Submit Report
+                    </button>
+                    <button type="button" onclick="toggleReportForm()" class="flex-1 py-3 bg-white/10 border border-white/20 text-white font-bold rounded-3xl hover:bg-white/20 transition">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Two Column Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+            
+            <!-- Left Column -->
+            <div class="lg:col-span-2 space-y-6">
+                
+                <!-- My Recent Reports -->
+                <div class="glass rounded-3xl p-6 neon-border">
+                    <h2 class="title-font text-2xl mb-6 flex items-center gap-3">
+                        <i class="fa-solid fa-list text-cyan-400"></i> My Recent Reports
+                    </h2>
+                    <div id="reportsContainer" class="space-y-3">
+                        <div class="text-center text-white/60 py-8">
+                            <i class="fa-solid fa-inbox text-4xl mb-3 opacity-50"></i>
+                            <p>No reports yet. <span onclick="toggleReportForm()" class="text-cyan-400 cursor-pointer hover:text-white">Submit one now!</span></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Activity Log -->
+                <div class="glass rounded-3xl p-6 neon-border">
+                    <h2 class="title-font text-2xl mb-6 flex items-center gap-3">
+                        <i class="fa-solid fa-history text-cyan-400"></i> Activity Log
+                    </h2>
+                    <div id="activityContainer" class="space-y-3 max-h-96 overflow-y-auto">
+                        <div class="text-center text-white/60 py-8">
+                            <p>No activity yet</p>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Right Column -->
+            <div class="space-y-6">
+                
+                <!-- Personalized Alerts -->
+                <div class="glass rounded-3xl p-6 neon-border">
+                    <h2 class="title-font text-xl mb-4 flex items-center gap-3">
+                        <i class="fa-solid fa-bell text-amber-400"></i> Alerts for You
+                    </h2>
+                    <div id="alertsContainer" class="space-y-2">
+                        <div class="text-center text-white/60 py-6 text-sm">
+                            <p>No active alerts</p>
+                            <p class="text-xs mt-2">Your area is safe ✓</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Flood Risk for My Area -->
+                <div class="glass rounded-3xl p-6 neon-border">
+                    <h2 class="title-font text-xl mb-4 flex items-center gap-3">
+                        <i class="fa-solid fa-chart-line text-cyan-400"></i> My Area Risk
+                    </h2>
+                    <div id="riskIndicator" class="mb-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm">Risk Level</span>
+                            <span id="riskValue" class="font-bold text-emerald-400">LOW</span>
+                        </div>
+                        <div class="w-full bg-white/10 rounded-full h-3 overflow-hidden">
+                            <div id="riskBar" class="h-full bg-emerald-500 rounded-full" style="width: 20%;"></div>
+                        </div>
+                    </div>
+                    <p id="riskDesc" class="text-xs text-white/60">Your area is at low risk. Stay informed.</p>
+                </div>
+                
+                <!-- Quick Stats -->
+                <div class="glass rounded-3xl p-6 neon-border">
+                    <h2 class="title-font text-xl mb-4 flex items-center gap-3">
+                        <i class="fa-solid fa-water text-blue-400"></i> Water Levels
+                    </h2>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span>River Panay</span>
+                                <span id="riverLevel" class="text-emerald-400">2.1m</span>
+                            </div>
+                            <div class="w-full bg-white/10 rounded-full h-2 overflow-hidden">
+                                <div class="h-full bg-emerald-500" style="width: 42%;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span>Urban Watershed</span>
+                                <span id="watershedLevel" class="text-emerald-400">1.8m</span>
+                            </div>
+                            <div class="w-full bg-white/10 rounded-full h-2 overflow-hidden">
+                                <div class="h-full bg-emerald-500" style="width: 36%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-white/60 mt-4">
+                        <i class="fa-solid fa-sync text-cyan-400 mr-1"></i>
+                        Updated 2 min ago
+                    </p>
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+    
+    <!-- Toast Container -->
+    <div id="toastContainer" class="fixed bottom-6 right-6 space-y-3 z-50"></div>
+    
+    <!-- Scripts -->
+    <script src="api-client.js"></script>
+    <script src="performance.js"></script>
+    
+    <script>
+        // Floating particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const size = Math.random() * 3 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.animationDuration = `${Math.random() * 10 + 8}s`;
+                particle.style.animationDelay = `-${Math.random() * 15}s`;
+                particle.style.opacity = Math.random() * 0.5 + 0.2;
+                
+                container.appendChild(particle);
+                
+                setTimeout(() => {
+                    if (particle.parentNode) particle.parentNode.removeChild(particle);
+                }, 25000);
+            }
+        }
+        
+        // Show toast notification
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            
+            let bgColor = 'bg-blue-500/90';
+            let icon = 'fa-info-circle';
+            
+            if (type === 'success') {
+                bgColor = 'bg-green-500/90';
+                icon = 'fa-check-circle';
+            } else if (type === 'error') {
+                bgColor = 'bg-red-500/90';
+                icon = 'fa-exclamation-circle';
+            } else if (type === 'warning') {
+                bgColor = 'bg-amber-500/90';
+                icon = 'fa-exclamation-triangle';
+            }
+            
+            toast.innerHTML = `
+                <div class="${bgColor} text-white px-6 py-4 rounded-3xl flex items-center gap-3 shadow-lg animate-slide-in-right backdrop-blur-sm">
+                    <i class="fa-solid ${icon}"></i>
+                    <span>${message}</span>
+                    <button onclick="this.parentElement.parentElement.remove()" class="ml-auto text-white/80 hover:text-white">
+                        <i class="fa-solid fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                if (toast.parentNode) toast.parentNode.removeChild(toast);
+            }, 4000);
+        }
+        
+        // Toggle user menu
+        function toggleUserMenu() {
+            const menu = document.getElementById('userMenu');
+            if (menu) {
+                menu.classList.toggle('hidden');
+            }
+        }
+        
+        // Toggle report form
+        function toggleReportForm() {
+            const form = document.getElementById('quickReportForm');
+            form.classList.toggle('hidden');
+        }
+        
+        // Navigate to page
+        function navigateTo(url) {
+            window.location.href = url;
+        }
+        
+        // Perform logout
+        async function performLogout() {
+            if (!confirm('Are you sure you want to logout?')) return;
+            
+            try {
+                const response = await fetch('api.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'logout' })
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    window.location.href = 'login.html';
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+                window.location.href = 'login.html';
+            }
+        }
+        
+        // Check auth status
+        async function checkAuthStatus() {
+            try {
+                const response = await fetch('api.php?action=me');
+                const data = await response.json();
+                
+                if (data.success && data.user) {
+                    updateDashboard(data.user);
+                    
+                    // Show admin link if user is admin/moderator
+                    if (data.user.role === 'admin' || data.user.role === 'moderator') {
+                        document.getElementById('adminLinkContainer').classList.remove('hidden');
+                    }
+                } else {
+                    window.location.href = 'login.html';
+                }
+            } catch (error) {
+                console.error('Auth check failed:', error);
+                window.location.href = 'login.html';
+            }
+        }
+        
+        // Update dashboard with user data
+        function updateDashboard(user) {
+            document.getElementById('welcomeName').textContent = user.fullName || 'User';
+            document.getElementById('userName').textContent = user.fullName || 'User';
+            document.getElementById('userEmail').textContent = user.email;
+            document.getElementById('userBarangay').textContent = user.barangay || 'Barangay';
+            document.getElementById('userLocation').textContent = user.barangay || 'Bacolod City';
+            
+            loadUserReports();
+            loadUserActivity();
+            loadUserAlerts();
+            loadImpactStats();
+        }
+        
+        // Load user's reports
+        async function loadUserReports() {
+            try {
+                const response = await fetch('api.php?action=user_reports');
+                const data = await response.json();
+                
+                if (data.success && data.reports && data.reports.length > 0) {
+                    const container = document.getElementById('reportsContainer');
+                    container.innerHTML = data.reports.map(report => `
+                        <div class="bg-white/5 border border-white/10 rounded-2xl p-4 hover:bg-white/10 transition">
+                            <div class="flex items-start justify-between mb-2">
+                                <div>
+                                    <h3 class="font-bold text-cyan-400">${report.location}</h3>
+                                    <p class="text-xs text-white/60">${new Date(report.created_at).toLocaleDateString()}</p>
+                                </div>
+                                <span class="px-3 py-1 rounded-full text-xs font-bold ${
+                                    report.severity === 'Critical' ? 'bg-red-500/20 text-red-400' :
+                                    report.severity === 'High' ? 'bg-orange-500/20 text-orange-400' :
+                                    report.severity === 'Medium' ? 'bg-yellow-500/20 text-yellow-400' :
+                                    'bg-green-500/20 text-green-400'
+                                }">
+                                    ${report.severity}
+                                </span>
+                            </div>
+                            <p class="text-sm text-white/80">${report.description}</p>
+                            <p class="text-xs text-white/50 mt-2">Status: <span class="text-cyan-400">${report.status || 'pending'}</span></p>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Failed to load reports:', error);
+            }
+        }
+        
+        // Load user activity
+        async function loadUserActivity() {
+            try {
+                const response = await fetch('api.php?action=user_activity');
+                const data = response.json().catch(() => ({ activities: [] }));
+                
+                const container = document.getElementById('activityContainer');
+                // Generate sample activity if not available from API
+                const activities = [
+                    { action: 'Report Verified', time: '2 hours ago', icon: 'fa-check-circle', color: 'text-green-400' },
+                    { action: 'Report Submitted', time: '1 day ago', icon: 'fa-paper-plane', color: 'text-cyan-400' },
+                    { action: 'Alert Received', time: '3 days ago', icon: 'fa-bell', color: 'text-amber-400' },
+                    { action: 'Account Created', time: '1 week ago', icon: 'fa-star', color: 'text-yellow-400' }
+                ];
+                
+                container.innerHTML = activities.map(act => `
+                    <div class="flex items-start gap-3 pb-3 border-b border-white/10 last:border-0">
+                        <i class="fa-solid ${act.icon} ${act.color} mt-1"></i>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-semibold">${act.action}</p>
+                            <p class="text-xs text-white/60">${act.time}</p>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Failed to load activity:', error);
+            }
+        }
+        
+        // Load user alerts
+        async function loadUserAlerts() {
+            try {
+                const response = await fetch('api.php?action=user_alerts');
+                const data = response.json().catch(() => ({ alerts: [] }));
+                
+                const container = document.getElementById('alertsContainer');
+                // Generate sample alert if not available
+                container.innerHTML = `
+                    <div class="text-center text-emerald-400 py-4 text-sm">
+                        <i class="fa-solid fa-shield-check text-xl mb-2"></i>
+                        <p>No active alerts</p>
+                        <p class="text-xs mt-2 text-white/60">Your area is safe ✓</p>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Failed to load alerts:', error);
+            }
+        }
+        
+        // Load impact stats
+        async function loadImpactStats() {
+            try {
+                const response = await fetch('api.php?action=user_stats');
+                const data = response.json().catch(() => ({ stats: {} }));
+                
+                // Update with sample data
+                document.getElementById('statsReports').textContent = '3';
+                document.getElementById('statsVerified').textContent = '2';
+                document.getElementById('statsLivesHelped').textContent = '47';
+                document.getElementById('statsRank').textContent = '#142';
+            } catch (error) {
+                console.error('Failed to load stats:', error);
+            }
+        }
+        
+        // Submit report form
+        document.getElementById('quickReportSubmit').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const payload = {
+                action: 'submit_report',
+                location: formData.get('location'),
+                severity: formData.get('severity'),
+                description: formData.get('description')
+            };
+            
+            try {
+                const response = await fetch('api.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showToast('✅ Report submitted successfully!', 'success');
+                    toggleReportForm();
+                    e.target.reset();
+                    loadUserReports();
+                } else {
+                    showToast(data.message || '❌ Failed to submit report', 'error');
+                }
+            } catch (error) {
+                console.error('Submit error:', error);
+                showToast('❌ Connection error', 'error');
+            }
+        });
+        
+        // Initialize
+        window.addEventListener('load', () => {
+            createParticles();
+            checkAuthStatus();
+        });
+    </script>
+    
+    <style>
+        @keyframes slide-in-right {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .animate-slide-in-right {
+            animation: slide-in-right 0.3s ease-out;
+        }
+        
+        select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300f0ff' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+        }
+    </style>
+</body>
+</html>
