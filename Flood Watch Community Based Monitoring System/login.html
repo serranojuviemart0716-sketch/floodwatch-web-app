@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="FloodWatch - Login to Real-time Community Flood Monitoring">
+    <meta name="theme-color" content="#0a0a2e">
+    <title>FloodWatch • Login - Community Flood Monitoring 2026</title>
+    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75' text-anchor='middle' x='50'>🌊</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <script>
+        window.pageStartTime = performance.now();
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed:', err));
+        }
+    </script>
+</head>
+<body class="tail-container text-white min-h-screen flex items-center justify-center py-12 px-4" style="background: linear-gradient(90deg, #0a0a2e 0%, #001122 100%);">
+    
+    <!-- Floating particles background -->
+    <div id="particles" class="absolute inset-0 pointer-events-none"></div>
+    
+    <!-- Main container -->
+    <div class="relative z-10 w-full max-w-md">
+        
+        <!-- Logo -->
+        <div class="text-center mb-12">
+            <div class="flex items-center justify-center gap-3 mb-6">
+                <div class="w-12 h-12 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-2xl flex items-center justify-center text-3xl shadow-inner neon-border">
+                    🌊
+                </div>
+                <div>
+                    <h1 class="title-font text-4xl tracking-[-1px] text-white">FloodWatch</h1>
+                    <p class="text-[10px] text-cyan-400 font-medium tracking-[1px]">2026 COMMUNITY MONITORING</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Login Form Card -->
+        <div class="glass rounded-3xl p-8 neon-border">
+            <h2 class="title-font text-3xl mb-2 text-white">Welcome Back</h2>
+            <p class="text-white/60 text-sm mb-8">Enter your credentials to access the flood monitoring dashboard</p>
+            
+            <form id="loginForm" class="space-y-6">
+                <!-- Email Input -->
+                <div>
+                    <label class="block text-xs uppercase mb-2 text-white/60 font-medium">Email Address</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-cyan-400"></i>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="you@example.com"
+                            class="w-full bg-white/10 border border-white/20 focus:border-cyan-400 rounded-3xl pl-12 pr-6 py-4 text-white placeholder:text-white/40 outline-none transition"
+                            required
+                        >
+                    </div>
+                </div>
+                
+                <!-- Password Input -->
+                <div>
+                    <label class="block text-xs uppercase mb-2 text-white/60 font-medium">Password</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-cyan-400"></i>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            placeholder="••••••••"
+                            class="w-full bg-white/10 border border-white/20 focus:border-cyan-400 rounded-3xl pl-12 pr-12 py-4 text-white placeholder:text-white/40 outline-none transition"
+                            required
+                        >
+                        <button 
+                            type="button" 
+                            class="absolute right-4 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition"
+                            onclick="togglePasswordVisibility()"
+                        >
+                            <i class="fa-solid fa-eye" id="eyeIcon"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Remember Me -->
+                <div class="flex items-center">
+                    <input 
+                        type="checkbox" 
+                        id="rememberMe" 
+                        name="rememberMe" 
+                        class="w-4 h-4 rounded bg-white/10 border-white/20 text-cyan-400 focus:ring-cyan-400 cursor-pointer"
+                    >
+                    <label for="rememberMe" class="ml-3 text-sm text-white/70 cursor-pointer">
+                        Remember me on this device
+                    </label>
+                </div>
+                
+                <!-- Login Button -->
+                <button 
+                    type="submit" 
+                    class="w-full py-4 bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-bold text-lg rounded-3xl flex items-center justify-center gap-3 hover:shadow-lg hover:shadow-cyan-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    id="loginBtn"
+                >
+                    <i class="fa-solid fa-sign-in-alt"></i>
+                    <span id="btnText">LOGIN</span>
+                </button>
+            </form>
+            
+            <!-- Divider -->
+            <div class="my-6 flex items-center gap-3">
+                <div class="flex-1 h-px bg-white/10"></div>
+                <span class="text-xs text-white/60">OR</span>
+                <div class="flex-1 h-px bg-white/10"></div>
+            </div>
+            
+            <!-- Register Link -->
+            <p class="text-center text-sm text-white/70">
+                Don't have an account?
+                <a href="register.html" class="text-cyan-400 font-semibold hover:text-white transition">
+                    Create one now
+                </a>
+            </p>
+        </div>
+        
+        <!-- Demo Credentials Info (Development only) -->
+        <div class="mt-6 p-4 rounded-2xl bg-white/5 border border-amber-400/30 text-xs text-amber-300 text-center">
+            <i class="fa-solid fa-info-circle mr-2"></i>
+            Demo: Use <strong>demo@floodwatch.local</strong> / <strong>password123</strong>
+        </div>
+    </div>
+    
+    <!-- Toast Container -->
+    <div id="toastContainer" class="fixed bottom-6 right-6 space-y-3 z-50"></div>
+    
+    <!-- Scripts -->
+    <script src="api-client.js"></script>
+    <script src="performance.js"></script>
+    
+    <script>
+        // Floating particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const size = Math.random() * 4 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.animationDuration = `${Math.random() * 10 + 8}s`;
+                particle.style.animationDelay = `-${Math.random() * 15}s`;
+                particle.style.opacity = Math.random() * 0.6 + 0.3;
+                
+                container.appendChild(particle);
+                
+                setTimeout(() => {
+                    if (particle.parentNode) particle.parentNode.removeChild(particle);
+                }, 25000);
+            }
+        }
+        
+        // Password visibility toggle
+        function togglePasswordVisibility() {
+            const input = document.getElementById('password');
+            const icon = document.getElementById('eyeIcon');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+        
+        // Show toast notification
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            
+            let bgColor = 'bg-blue-500/90';
+            let icon = 'fa-info-circle';
+            
+            if (type === 'success') {
+                bgColor = 'bg-green-500/90';
+                icon = 'fa-check-circle';
+            } else if (type === 'error') {
+                bgColor = 'bg-red-500/90';
+                icon = 'fa-exclamation-circle';
+            } else if (type === 'warning') {
+                bgColor = 'bg-amber-500/90';
+                icon = 'fa-exclamation-triangle';
+            }
+            
+            toast.innerHTML = `
+                <div class="${bgColor} text-white px-6 py-4 rounded-3xl flex items-center gap-3 shadow-lg animate-slide-in-right backdrop-blur-sm">
+                    <i class="fa-solid ${icon}"></i>
+                    <span>${message}</span>
+                    <button onclick="this.parentElement.parentElement.remove()" class="ml-auto text-white/80 hover:text-white">
+                        <i class="fa-solid fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                if (toast.parentNode) toast.parentNode.removeChild(toast);
+            }, 4000);
+        }
+        
+        // Handle login form submission
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            const loginBtn = document.getElementById('loginBtn');
+            const btnText = document.getElementById('btnText');
+            
+            // Client-side validation
+            if (!email || !password) {
+                showToast('Please fill in all fields', 'warning');
+                return;
+            }
+            
+            if (!email.includes('@')) {
+                showToast('Please enter a valid email address', 'warning');
+                return;
+            }
+            
+            // Loading state
+            loginBtn.disabled = true;
+            btnText.textContent = 'LOGGING IN...';
+            
+            try {
+                // Call login API
+                const response = await fetch('api.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'login',
+                        email: email,
+                        password: password
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Store remember me preference if checked
+                    if (rememberMe) {
+                        localStorage.setItem('floodwatch_remember_me', 'true');
+                        localStorage.setItem('floodwatch_email', email);
+                    }
+                    
+                    showToast('✅ Login successful! Redirecting...', 'success');
+                    
+                    // Redirect after short delay based on user role
+                    setTimeout(() => {
+                        if (data.user && (data.user.role === 'admin' || data.user.role === 'moderator')) {
+                            window.location.href = 'admin-dashboard.html';
+                        } else {
+                            window.location.href = 'user-dashboard.html';
+                        }
+                    }, 1500);
+                } else {
+                    showToast(data.message || '❌ Login failed. Please try again.', 'error');
+                    loginBtn.disabled = false;
+                    btnText.textContent = 'LOGIN';
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showToast('❌ Connection error. Please check your internet.', 'error');
+                loginBtn.disabled = false;
+                btnText.textContent = 'LOGIN';
+            }
+        });
+        
+        // Pre-fill email if "remember me" was checked
+        window.addEventListener('load', () => {
+            createParticles();
+            
+            if (localStorage.getItem('floodwatch_remember_me') === 'true') {
+                const savedEmail = localStorage.getItem('floodwatch_email');
+                if (savedEmail) {
+                    document.getElementById('email').value = savedEmail;
+                    document.getElementById('rememberMe').checked = true;
+                    document.getElementById('email').focus();
+                }
+            }
+            
+            // Check if already logged in
+            checkAuthStatus();
+        });
+        
+        // Check if user is already logged in
+        async function checkAuthStatus() {
+            try {
+                const response = await fetch('api.php?action=me', {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                
+                if (data.success && data.user) {
+                    // Already logged in, redirect to dashboard
+                    window.location.href = 'index.html';
+                }
+            } catch (error) {
+                // Not logged in or error - stay on login page
+            }
+        }
+    </script>
+    
+    <style>
+        @keyframes slide-in-right {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .animate-slide-in-right {
+            animation: slide-in-right 0.3s ease-out;
+        }
+    </style>
+</body>
+</html>
